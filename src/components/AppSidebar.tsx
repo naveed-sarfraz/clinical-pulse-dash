@@ -24,8 +24,8 @@ import {
 } from "@/components/ui/sidebar";
 
 const navigationItems = [
-  { title: "Overview", url: "/", icon: Home },
-  { title: "Search", url: "/search", icon: Search },
+  { title: "Search", url: "/", icon: Search },
+  { title: "Dashboard", url: "/dashboard", icon: Home },
   { title: "Analytics", url: "/analytics", icon: BarChart3 },
   { title: "Status Monitor", url: "/status", icon: Bell },
   { title: "KOL Network", url: "/kol", icon: Users2 },

@@ -23,8 +23,8 @@ const App = () => (
       <BrowserRouter>
         <Layout>
           <Routes>
-            <Route path="/" element={<Overview />} />
-            <Route path="/search" element={<SearchPage />} />
+            <Route path="/" element={<SearchPage />} />
+            <Route path="/dashboard" element={<Overview />} />
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/status" element={<StatusMonitor />} />
             <Route path="/kol" element={<KOLNetwork />} />
