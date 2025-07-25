@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, AreaChart, Area } from 'recharts';
-import { Search, MessageCircle, TrendingUp, Users, Calendar, MapPin, Building2, Pill, Clock, AlertCircle, Bell, Activity, Target, Zap, Filter, BarChart3, PieChart, Map, Users2, Lightbulb, FileSearch, TrendingDown, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
+import { Search, MessageCircle, TrendingUp, Users, Calendar, MapPin, Building2, Pill, Clock, AlertCircle, Bell, Activity, Target, Zap, Filter, BarChart3, PieChart, Map, Users2, Lightbulb, FileSearch, TrendingDown, CheckCircle, XCircle, AlertTriangle, Globe, Building } from "lucide-react";
 
 const Dashboard = () => {
   const [query, setQuery] = useState("");
@@ -552,30 +552,239 @@ const Dashboard = () => {
 
           {/* KOL Network Tab */}
           <TabsContent value="kol" className="space-y-6 mt-6">
+            {/* KOL Network Overview */}
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+              <Card className="border-0 shadow-elevated">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Users2 className="h-4 w-4 text-primary" />
+                    <p className="text-sm font-medium text-muted-foreground">Active KOLs</p>
+                  </div>
+                  <p className="text-2xl font-bold">1,247</p>
+                  <p className="text-xs text-muted-foreground">+15% vs last year</p>
+                </CardContent>
+              </Card>
+              <Card className="border-0 shadow-elevated">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Activity className="h-4 w-4 text-accent" />
+                    <p className="text-sm font-medium text-muted-foreground">Avg Trials/KOL</p>
+                  </div>
+                  <p className="text-2xl font-bold">3.2</p>
+                  <p className="text-xs text-muted-foreground">-5% vs last year</p>
+                </CardContent>
+              </Card>
+              <Card className="border-0 shadow-elevated">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-2 mb-2">
+                    <TrendingUp className="h-4 w-4 text-success" />
+                    <p className="text-sm font-medium text-muted-foreground">Network Success</p>
+                  </div>
+                  <p className="text-2xl font-bold">74%</p>
+                  <p className="text-xs text-muted-foreground">+8% vs last year</p>
+                </CardContent>
+              </Card>
+              <Card className="border-0 shadow-elevated">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Globe className="h-4 w-4 text-info" />
+                    <p className="text-sm font-medium text-muted-foreground">Global Reach</p>
+                  </div>
+                  <p className="text-2xl font-bold">45</p>
+                  <p className="text-xs text-muted-foreground">countries</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Top KOLs Performance */}
+              <Card className="border-0 shadow-elevated">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Users2 className="h-5 w-5" />
+                    Top Performing Investigators
+                  </CardTitle>
+                  <CardDescription>Ranked by trial volume and success rate</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {kolData.map((kol, index) => (
+                      <div key={kol.name} className="p-4 rounded-lg bg-muted/50 hover:bg-muted/70 transition-colors">
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              <h4 className="font-semibold">{kol.name}</h4>
+                              <Badge variant="outline" className="text-xs">
+                                #{index + 1}
+                              </Badge>
+                            </div>
+                            <p className="text-sm text-muted-foreground mb-1">{kol.institution}</p>
+                            <p className="text-xs text-muted-foreground">{kol.specialty}</p>
+                          </div>
+                          <div className="text-right">
+                            <Badge variant="secondary" className="bg-accent/10 text-accent mb-1">
+                              {kol.successRate}% success
+                            </Badge>
+                          </div>
+                        </div>
+                        
+                        <div className="grid grid-cols-3 gap-3 text-xs">
+                          <div className="text-center p-2 bg-background/50 rounded">
+                            <p className="font-medium text-primary">{kol.trials}</p>
+                            <p className="text-muted-foreground">Trials</p>
+                          </div>
+                          <div className="text-center p-2 bg-background/50 rounded">
+                            <p className="font-medium text-primary">{Math.floor(kol.trials * 0.6)}</p>
+                            <p className="text-muted-foreground">Completed</p>
+                          </div>
+                          <div className="text-center p-2 bg-background/50 rounded">
+                            <p className="font-medium text-primary">{Math.floor(kol.trials * 0.3)}</p>
+                            <p className="text-muted-foreground">Publications</p>
+                          </div>
+                        </div>
+
+                        <div className="mt-3 pt-3 border-t border-muted">
+                          <div className="flex justify-between items-center text-xs">
+                            <span className="text-muted-foreground">Network Influence</span>
+                            <span className="font-medium">{85 - index * 5}/100</span>
+                          </div>
+                          <div className="w-full bg-muted rounded-full h-1.5 mt-1">
+                            <div 
+                              className="bg-gradient-to-r from-primary to-accent h-1.5 rounded-full" 
+                              style={{ width: `${85 - index * 5}%` }}
+                            ></div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* KOL Network Analysis */}
+              <Card className="border-0 shadow-elevated">
+                <CardHeader>
+                  <CardTitle>Network Analysis & Collaborations</CardTitle>
+                  <CardDescription>Investigator partnerships and institutional networks</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {/* Top Collaborations */}
+                  <div>
+                    <h4 className="font-medium mb-3 flex items-center gap-2">
+                      <Users className="h-4 w-4" />
+                      Key Collaborations
+                    </h4>
+                    <div className="space-y-3">
+                      {[
+                        { pair: "Dr. Sarah Chen ↔ Dr. Michael Rodriguez", trials: 12, success: "89%" },
+                        { pair: "Dr. Emily Watson ↔ Dr. James Park", trials: 8, success: "92%" },
+                        { pair: "Dr. David Liu ↔ Dr. Maria Santos", trials: 6, success: "83%" }
+                      ].map((collab, index) => (
+                        <div key={index} className="flex justify-between items-center p-3 bg-muted/30 rounded-lg">
+                          <div>
+                            <p className="text-sm font-medium">{collab.pair}</p>
+                            <p className="text-xs text-muted-foreground">{collab.trials} joint trials</p>
+                          </div>
+                          <Badge variant="outline">{collab.success} success</Badge>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Institutional Networks */}
+                  <div>
+                    <h4 className="font-medium mb-3 flex items-center gap-2">
+                      <Building className="h-4 w-4" />
+                      Leading Institutions
+                    </h4>
+                    <div className="space-y-2">
+                      {[
+                        { name: "Mayo Clinic", kols: 23, trials: 156, specialty: "Oncology" },
+                        { name: "Johns Hopkins", kols: 19, trials: 134, specialty: "Cardiology" },
+                        { name: "Stanford Medicine", kols: 16, trials: 98, specialty: "Neurology" },
+                        { name: "Mass General Brigham", kols: 14, trials: 87, specialty: "Immunology" }
+                      ].map((inst, index) => (
+                        <div key={index} className="p-3 bg-muted/30 rounded-lg">
+                          <div className="flex justify-between items-start mb-2">
+                            <div>
+                              <p className="font-medium text-sm">{inst.name}</p>
+                              <p className="text-xs text-muted-foreground">{inst.specialty} Focus</p>
+                            </div>
+                            <Badge variant="secondary" className="text-xs">{inst.kols} KOLs</Badge>
+                          </div>
+                          <div className="grid grid-cols-2 gap-2 text-xs">
+                            <div>
+                              <span className="text-muted-foreground">Active Trials: </span>
+                              <span className="font-medium">{inst.trials}</span>
+                            </div>
+                            <div>
+                              <span className="text-muted-foreground">Avg Success: </span>
+                              <span className="font-medium">{78 + index}%</span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* KOL Activity Trends */}
             <Card className="border-0 shadow-elevated">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Users2 className="h-5 w-5" />
-                  Key Opinion Leaders Network
-                </CardTitle>
-                <CardDescription>Top investigators and their trial performance</CardDescription>
+                <CardTitle>KOL Activity Trends & Pipeline</CardTitle>
+                <CardDescription>Investigator engagement and upcoming trial commitments</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {kolData.map((kol, index) => (
-                    <div key={kol.name} className="flex items-center justify-between p-4 rounded-lg bg-muted/50">
-                      <div>
-                        <h4 className="font-medium">{kol.name}</h4>
-                        <p className="text-sm text-muted-foreground">{kol.institution} • {kol.specialty}</p>
-                        <p className="text-xs text-muted-foreground">{kol.trials} trials conducted</p>
-                      </div>
-                      <div className="text-right">
-                        <Badge variant="secondary" className="bg-accent/10 text-accent">
-                          {kol.successRate}% success
-                        </Badge>
-                      </div>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {/* Activity Timeline */}
+                  <div>
+                    <h4 className="font-medium mb-4">Trial Initiation Timeline</h4>
+                    <ResponsiveContainer width="100%" height={250}>
+                      <LineChart data={[
+                        { month: 'Jan', kols: 45, trials: 67 },
+                        { month: 'Feb', kols: 52, trials: 78 },
+                        { month: 'Mar', kols: 48, trials: 71 },
+                        { month: 'Apr', kols: 56, trials: 84 },
+                        { month: 'May', kols: 62, trials: 92 },
+                        { month: 'Jun', kols: 58, trials: 87 }
+                      ]}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--muted))" />
+                        <XAxis dataKey="month" />
+                        <YAxis />
+                        <Tooltip />
+                        <Line type="monotone" dataKey="kols" stroke="hsl(var(--primary))" strokeWidth={2} />
+                        <Line type="monotone" dataKey="trials" stroke="hsl(var(--accent))" strokeWidth={2} />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+
+                  {/* Emerging KOLs */}
+                  <div>
+                    <h4 className="font-medium mb-4">Emerging Investigators</h4>
+                    <div className="space-y-3">
+                      {[
+                        { name: "Dr. Alex Thompson", institution: "UCSF", growth: "+340%", trials: 3 },
+                        { name: "Dr. Priya Patel", institution: "NYU Langone", growth: "+280%", trials: 4 },
+                        { name: "Dr. Hassan Ahmed", institution: "Cleveland Clinic", growth: "+220%", trials: 5 },
+                        { name: "Dr. Lisa Chang", institution: "UCLA", growth: "+180%", trials: 3 }
+                      ].map((emerging, index) => (
+                        <div key={index} className="flex justify-between items-center p-3 bg-muted/30 rounded-lg">
+                          <div>
+                            <p className="font-medium text-sm">{emerging.name}</p>
+                            <p className="text-xs text-muted-foreground">{emerging.institution}</p>
+                          </div>
+                          <div className="text-right">
+                            <Badge variant="outline" className="bg-success/10 text-success border-success/20">
+                              {emerging.growth}
+                            </Badge>
+                            <p className="text-xs text-muted-foreground mt-1">{emerging.trials} trials</p>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  </div>
                 </div>
               </CardContent>
             </Card>
