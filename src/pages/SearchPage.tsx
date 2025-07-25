@@ -10,6 +10,7 @@ const SearchPage = () => {
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [expandedTrial, setExpandedTrial] = useState<string | null>(null);
+  const [showInitialResults, setShowInitialResults] = useState(true);
 
   // Enhanced mock trial data with required parameters
   const mockTrials = [
@@ -93,7 +94,12 @@ const SearchPage = () => {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!query.trim()) return;
+    setShowInitialResults(false);
+    
+    if (!query.trim()) {
+      setSearchResults([]);
+      return;
+    }
     
     // Simple search filtering - in real app would be more sophisticated
     const filtered = mockTrials.filter(trial => 
@@ -104,6 +110,9 @@ const SearchPage = () => {
     );
     setSearchResults(filtered);
   };
+
+  // Show initial sample results
+  const resultsToShow = showInitialResults ? mockTrials.slice(0, 2) : searchResults;
 
   const toggleTrialExpanded = (trialId: string) => {
     setExpandedTrial(expandedTrial === trialId ? null : trialId);
@@ -197,13 +206,13 @@ const SearchPage = () => {
       </Card>
 
       {/* Search Results */}
-      {searchResults.length > 0 && (
+      {resultsToShow.length > 0 && (
         <div className="space-y-4">
           <div className="text-sm text-muted-foreground">
-            {searchResults.length} trial{searchResults.length !== 1 ? 's' : ''} found
+            {showInitialResults ? 'Sample trials:' : `${resultsToShow.length} trial${resultsToShow.length !== 1 ? 's' : ''} found`}
           </div>
           
-          {searchResults.map((trial) => (
+          {resultsToShow.map((trial) => (
             <Card key={trial.id} className="border border-muted/50 hover:shadow-sm transition-shadow">
               <CardHeader className="pb-3">
                 <div className="flex justify-between items-start gap-4">
