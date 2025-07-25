@@ -4,13 +4,20 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, ChevronDown, ChevronUp, ExternalLink } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Search, ChevronDown, ChevronUp, ExternalLink, Filter, Sparkles } from "lucide-react";
 
 const SearchPage = () => {
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [expandedTrial, setExpandedTrial] = useState<string | null>(null);
-  const [showInitialResults, setShowInitialResults] = useState(true);
+  const [showFilters, setShowFilters] = useState(false);
+  const [filters, setFilters] = useState({
+    phase: "",
+    therapeuticArea: "",
+    trialType: "",
+    status: ""
+  });
 
   // Enhanced mock trial data with required parameters
   const mockTrials = [
@@ -92,9 +99,17 @@ const SearchPage = () => {
     }
   ];
 
+  const exampleQueries = [
+    "glioblastoma Phase II",
+    "diabetes digital therapeutics",
+    "heart failure device trials",
+    "lung cancer immunotherapy Phase I",
+    "Alzheimer's drug trials recruiting",
+    "pediatric oncology adaptive trials"
+  ];
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    setShowInitialResults(false);
     
     if (!query.trim()) {
       setSearchResults([]);
@@ -102,118 +117,188 @@ const SearchPage = () => {
     }
     
     // Simple search filtering - in real app would be more sophisticated
-    const filtered = mockTrials.filter(trial => 
+    let filtered = mockTrials.filter(trial => 
       trial.title.toLowerCase().includes(query.toLowerCase()) ||
       trial.therapeuticArea.toLowerCase().includes(query.toLowerCase()) ||
       trial.indication.toLowerCase().includes(query.toLowerCase()) ||
       trial.intervention.toLowerCase().includes(query.toLowerCase())
     );
+
+    // Apply filters if any are set
+    if (filters.phase) {
+      filtered = filtered.filter(trial => trial.phase === filters.phase);
+    }
+    if (filters.therapeuticArea) {
+      filtered = filtered.filter(trial => trial.therapeuticArea === filters.therapeuticArea);
+    }
+    if (filters.trialType) {
+      filtered = filtered.filter(trial => trial.trialType === filters.trialType);
+    }
+    if (filters.status) {
+      filtered = filtered.filter(trial => trial.status === filters.status);
+    }
+
     setSearchResults(filtered);
+    setShowFilters(true);
   };
 
-  // Show initial sample results
-  const resultsToShow = showInitialResults ? mockTrials.slice(0, 2) : searchResults;
+  const handleExampleClick = (exampleQuery: string) => {
+    setQuery(exampleQuery);
+  };
 
   const toggleTrialExpanded = (trialId: string) => {
     setExpandedTrial(expandedTrial === trialId ? null : trialId);
   };
 
+  const clearFilters = () => {
+    setFilters({
+      phase: "",
+      therapeuticArea: "",
+      trialType: "",
+      status: ""
+    });
+  };
+
   return (
-    <div className="max-w-4xl mx-auto space-y-8 p-6">
+    <div className="max-w-5xl mx-auto space-y-8 p-6">
       {/* Minimalist Header */}
-      <div className="text-center space-y-2">
-        <h1 className="text-2xl font-medium text-foreground">Clinical Trial Search</h1>
-        <p className="text-sm text-muted-foreground">Search and explore clinical trials with detailed study parameters</p>
+      <div className="text-center space-y-4 py-8">
+        <div className="flex items-center justify-center gap-2 mb-4">
+          <Search className="h-8 w-8 text-primary" />
+          <h1 className="text-3xl font-semibold text-foreground">Clinical Trial Search</h1>
+        </div>
+        <p className="text-muted-foreground max-w-2xl mx-auto">
+          Discover clinical trials with comprehensive study details, endpoints, and statistical parameters
+        </p>
       </div>
 
-      {/* Simple Search Bar */}
-      <Card className="border-0 shadow-sm">
-        <CardContent className="p-6">
-          <form onSubmit={handleSearch} className="space-y-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search trials by condition, intervention, or therapeutic area..."
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                className="pl-10 h-12 border-muted focus-visible:ring-1"
-              />
-              <Button 
-                type="submit" 
-                size="sm"
-                className="absolute right-2 top-2 h-8"
-              >
-                Search
-              </Button>
-            </div>
-          </form>
+      {/* Search Interface */}
+      <div className="space-y-6">
+        {/* Main Search Bar */}
+        <form onSubmit={handleSearch} className="relative">
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <Input
+              placeholder="Search for clinical trials by condition, treatment, or study type..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="pl-12 pr-24 h-14 text-base border-muted-foreground/20 focus-visible:ring-2 focus-visible:ring-primary/20"
+            />
+            <Button 
+              type="submit" 
+              size="sm"
+              className="absolute right-2 top-2 h-10 px-6"
+            >
+              Search
+            </Button>
+          </div>
+        </form>
 
-          {/* Example Prompts */}
-          <div className="mt-6 space-y-3">
-            <div className="text-sm font-medium text-foreground">Try these examples:</div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {[
-                {
-                  title: "Therapeutic Area Search",
-                  prompt: "Alzheimer's disease Phase III academic sites",
-                  description: "Find trials by indication and site type"
-                },
-                {
-                  title: "Site-Specific Query", 
-                  prompt: "melanoma trials at Mayo Clinic and Johns Hopkins",
-                  description: "Search by specific hospital networks"
-                },
-                {
-                  title: "Success Rate Analysis",
-                  prompt: "diabetes drug trials Phase II success rate >60%",
-                  description: "Find trials with high success rates"
-                },
-                {
-                  title: "Multi-Site Oncology",
-                  prompt: "breast cancer 50+ sites international private hospitals", 
-                  description: "Large-scale private hospital studies"
-                },
-                {
-                  title: "Rare Disease Networks",
-                  prompt: "cystic fibrosis academic medical centers success rate",
-                  description: "Academic-focused rare disease trials"
-                },
-                {
-                  title: "Cardiovascular Outcomes",
-                  prompt: "heart failure Phase IV community hospitals endpoints",
-                  description: "Real-world evidence studies"
-                }
-              ].map((example) => (
-                <div 
-                  key={example.title}
-                  onClick={() => setQuery(example.prompt)}
-                  className="p-3 border border-muted/50 rounded-lg cursor-pointer hover:bg-muted/30 transition-colors group"
+        {/* ChatGPT-style Example Queries */}
+        {searchResults.length === 0 && (
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+              <Sparkles className="h-4 w-4" />
+              Try these example searches:
+            </div>
+            <div className="flex flex-wrap gap-3">
+              {exampleQueries.map((example, index) => (
+                <Button
+                  key={index}
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleExampleClick(example)}
+                  className="text-sm border-muted-foreground/20 hover:border-primary/50 hover:bg-primary/5"
                 >
-                  <div className="text-sm font-medium group-hover:text-primary transition-colors">
-                    {example.title}
-                  </div>
-                  <div className="text-xs text-muted-foreground mt-1">
-                    {example.description}
-                  </div>
-                  <div className="text-xs text-primary/70 mt-2 font-mono">
-                    "{example.prompt}"
-                  </div>
-                </div>
+                  {example}
+                </Button>
               ))}
             </div>
           </div>
-        </CardContent>
-      </Card>
+        )}
+
+        {/* Filters - Show after search */}
+        {showFilters && searchResults.length > 0 && (
+          <Card className="border-muted/50">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <Filter className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm font-medium">Refine Results</span>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={clearFilters}
+                  className="h-8 text-xs"
+                >
+                  Clear filters
+                </Button>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <Select value={filters.phase} onValueChange={(value) => setFilters({...filters, phase: value})}>
+                  <SelectTrigger className="h-9">
+                    <SelectValue placeholder="Phase" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Phase I">Phase I</SelectItem>
+                    <SelectItem value="Phase II">Phase II</SelectItem>
+                    <SelectItem value="Phase III">Phase III</SelectItem>
+                    <SelectItem value="Phase IV">Phase IV</SelectItem>
+                    <SelectItem value="Phase I/II">Phase I/II</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                <Select value={filters.therapeuticArea} onValueChange={(value) => setFilters({...filters, therapeuticArea: value})}>
+                  <SelectTrigger className="h-9">
+                    <SelectValue placeholder="Therapeutic Area" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Oncology">Oncology</SelectItem>
+                    <SelectItem value="Cardiology">Cardiology</SelectItem>
+                    <SelectItem value="Endocrinology">Endocrinology</SelectItem>
+                    <SelectItem value="Neurology">Neurology</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                <Select value={filters.trialType} onValueChange={(value) => setFilters({...filters, trialType: value})}>
+                  <SelectTrigger className="h-9">
+                    <SelectValue placeholder="Trial Type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Interventional">Interventional</SelectItem>
+                    <SelectItem value="Observational">Observational</SelectItem>
+                    <SelectItem value="Adaptive">Adaptive</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                <Select value={filters.status} onValueChange={(value) => setFilters({...filters, status: value})}>
+                  <SelectTrigger className="h-9">
+                    <SelectValue placeholder="Status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Recruiting">Recruiting</SelectItem>
+                    <SelectItem value="Active, not recruiting">Active, not recruiting</SelectItem>
+                    <SelectItem value="Completed">Completed</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+      </div>
 
       {/* Search Results */}
-      {resultsToShow.length > 0 && (
+      {searchResults.length > 0 && (
         <div className="space-y-4">
-          <div className="text-sm text-muted-foreground">
-            {showInitialResults ? 'Sample trials:' : `${resultsToShow.length} trial${resultsToShow.length !== 1 ? 's' : ''} found`}
+          <div className="flex items-center justify-between">
+            <div className="text-sm text-muted-foreground">
+              {searchResults.length} trial{searchResults.length !== 1 ? 's' : ''} found
+            </div>
           </div>
           
-          {resultsToShow.map((trial) => (
-            <Card key={trial.id} className="border border-muted/50 hover:shadow-sm transition-shadow">
+          {searchResults.map((trial) => (
+            <Card key={trial.id} className="border border-muted/50 hover:shadow-md transition-shadow">
               <CardHeader className="pb-3">
                 <div className="flex justify-between items-start gap-4">
                   <div className="flex-1 min-w-0">
@@ -352,7 +437,7 @@ const SearchPage = () => {
         <div className="text-center py-12 text-muted-foreground">
           <Search className="h-12 w-12 mx-auto mb-4 opacity-50" />
           <p>No trials found matching your search criteria.</p>
-          <p className="text-sm">Try searching for different terms or conditions.</p>
+          <p className="text-sm">Try searching for different terms or adjusting your filters.</p>
         </div>
       )}
     </div>
