@@ -145,24 +145,34 @@ const SearchPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {[
                 {
-                  title: "Oncology Trials",
-                  prompt: "glioblastoma",
-                  description: "Find brain cancer treatment trials"
+                  title: "Therapeutic Area Search",
+                  prompt: "Alzheimer's disease Phase III academic sites",
+                  description: "Find trials by indication and site type"
                 },
                 {
-                  title: "Heart Device Studies", 
-                  prompt: "heart failure device",
-                  description: "Cardiac device intervention trials"
+                  title: "Site-Specific Query", 
+                  prompt: "melanoma trials at Mayo Clinic and Johns Hopkins",
+                  description: "Search by specific hospital networks"
                 },
                 {
-                  title: "Digital Health",
-                  prompt: "diabetes digital",
-                  description: "Digital therapeutics for diabetes"
+                  title: "Success Rate Analysis",
+                  prompt: "diabetes drug trials Phase II success rate >60%",
+                  description: "Find trials with high success rates"
                 },
                 {
-                  title: "Immunotherapy",
-                  prompt: "lung cancer immunotherapy", 
-                  description: "Cancer immunotherapy treatments"
+                  title: "Multi-Site Oncology",
+                  prompt: "breast cancer 50+ sites international private hospitals", 
+                  description: "Large-scale private hospital studies"
+                },
+                {
+                  title: "Rare Disease Networks",
+                  prompt: "cystic fibrosis academic medical centers success rate",
+                  description: "Academic-focused rare disease trials"
+                },
+                {
+                  title: "Cardiovascular Outcomes",
+                  prompt: "heart failure Phase IV community hospitals endpoints",
+                  description: "Real-world evidence studies"
                 }
               ].map((example) => (
                 <div 
