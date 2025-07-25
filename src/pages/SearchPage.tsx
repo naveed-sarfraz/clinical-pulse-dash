@@ -138,6 +138,51 @@ const SearchPage = () => {
               </Button>
             </div>
           </form>
+
+          {/* Example Prompts */}
+          <div className="mt-6 space-y-3">
+            <div className="text-sm font-medium text-foreground">Try these examples:</div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {[
+                {
+                  title: "Oncology Trials",
+                  prompt: "glioblastoma",
+                  description: "Find brain cancer treatment trials"
+                },
+                {
+                  title: "Heart Device Studies", 
+                  prompt: "heart failure device",
+                  description: "Cardiac device intervention trials"
+                },
+                {
+                  title: "Digital Health",
+                  prompt: "diabetes digital",
+                  description: "Digital therapeutics for diabetes"
+                },
+                {
+                  title: "Immunotherapy",
+                  prompt: "lung cancer immunotherapy", 
+                  description: "Cancer immunotherapy treatments"
+                }
+              ].map((example) => (
+                <div 
+                  key={example.title}
+                  onClick={() => setQuery(example.prompt)}
+                  className="p-3 border border-muted/50 rounded-lg cursor-pointer hover:bg-muted/30 transition-colors group"
+                >
+                  <div className="text-sm font-medium group-hover:text-primary transition-colors">
+                    {example.title}
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-1">
+                    {example.description}
+                  </div>
+                  <div className="text-xs text-primary/70 mt-2 font-mono">
+                    "{example.prompt}"
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </CardContent>
       </Card>
 
