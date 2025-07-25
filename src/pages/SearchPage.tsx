@@ -19,7 +19,7 @@ const SearchPage = () => {
     status: ""
   });
 
-  // Enhanced mock trial data with required parameters
+  // Rich trial data from dashboard with all required parameters
   const mockTrials = [
     { 
       id: 'NCT05234567', 
@@ -29,7 +29,7 @@ const SearchPage = () => {
       phase: 'Phase II',
       trialType: 'Interventional',
       interventionType: 'Biologic',
-      intervention: 'CAR-T Gene Therapy Vector',
+      intervention: 'Gene Therapy Vector (CAR-T)',
       comparator: 'Standard of Care (Temozolomide + Radiation)',
       randomization: 'Randomized (1:1)',
       blinding: 'Open-label',
@@ -38,30 +38,47 @@ const SearchPage = () => {
       sampleSize: 120,
       statisticalPower: '80% power to detect 30% improvement in OS',
       status: 'Recruiting',
-      sponsor: 'Memorial Sloan Kettering Cancer Center'
+      sponsor: 'Memorial Sloan Kettering Cancer Center',
+      startDate: '2022-03-15',
+      estimatedCompletion: '2025-12-31',
+      currentEnrollment: 67,
+      sites: [
+        { name: 'Memorial Sloan Kettering Cancer Center', type: 'Academic', country: 'United States' },
+        { name: 'MD Anderson Cancer Center', type: 'Academic', country: 'United States' },
+        { name: 'Dana-Farber Cancer Institute', type: 'Academic', country: 'United States' }
+      ],
+      successRateInSimilar: '42% in similar GBM gene therapy trials'
     },
     { 
       id: 'NCT05234568', 
-      title: 'Adaptive Platform Trial for Advanced Lung Cancer Immunotherapy',
+      title: 'CAR-T Cell Therapy for Recurrent Brain Tumors',
       therapeuticArea: 'Oncology',
-      indication: 'Non-Small Cell Lung Cancer (NSCLC)',
+      indication: 'Recurrent Glioblastoma',
       phase: 'Phase I/II',
       trialType: 'Adaptive',
-      interventionType: 'Drug',
-      intervention: 'PD-L1 Inhibitor (Pembrolizumab)',
+      interventionType: 'Biologic',
+      intervention: 'CAR-T Cell Therapy (EGFRvIII-targeted)',
       comparator: 'Historical controls',
       randomization: 'Non-randomized',
       blinding: 'Single-blind (Investigator)',
       primaryEndpoint: 'Maximum Tolerated Dose (MTD) and Objective Response Rate',
       secondaryEndpoints: ['Duration of Response', 'Pharmacokinetics', 'Biomarker Analysis'],
-      sampleSize: 75,
+      sampleSize: 30,
       statisticalPower: '85% power to detect ORR >20%',
       status: 'Active, not recruiting',
-      sponsor: 'Bristol-Myers Squibb'
+      sponsor: 'Duke University Medical Center',
+      startDate: '2021-08-20',
+      estimatedCompletion: '2024-06-30',
+      currentEnrollment: 28,
+      sites: [
+        { name: 'Duke University Medical Center', type: 'Academic', country: 'United States' },
+        { name: 'University of Pennsylvania', type: 'Academic', country: 'United States' }
+      ],
+      successRateInSimilar: '38% in similar CAR-T Phase I/II trials'
     },
     { 
       id: 'NCT05234569', 
-      title: 'Digital Therapeutics for Diabetes Management Observational Study',
+      title: 'Digital Therapeutics for Type 2 Diabetes Management',
       therapeuticArea: 'Endocrinology',
       indication: 'Type 2 Diabetes Mellitus',
       phase: 'Phase IV',
@@ -76,26 +93,106 @@ const SearchPage = () => {
       sampleSize: 500,
       statisticalPower: '90% power to detect 0.5% reduction in HbA1c',
       status: 'Recruiting',
-      sponsor: 'Joslin Diabetes Center'
+      sponsor: 'Joslin Diabetes Center',
+      startDate: '2023-01-10',
+      estimatedCompletion: '2024-12-31',
+      currentEnrollment: 312,
+      sites: [
+        { name: 'Joslin Diabetes Center', type: 'Academic', country: 'United States' },
+        { name: 'Cleveland Clinic', type: 'Academic', country: 'United States' },
+        { name: 'Kaiser Permanente', type: 'Private', country: 'United States' },
+        { name: 'Scripps Health', type: 'Private', country: 'United States' }
+      ],
+      successRateInSimilar: '78% in similar digital diabetes intervention studies'
     },
     { 
       id: 'NCT05234570', 
-      title: 'Cardiac Device Trial for Heart Failure with Reduced Ejection Fraction',
+      title: 'Left Ventricular Assist Device Trial for Heart Failure',
       therapeuticArea: 'Cardiology',
       indication: 'Heart Failure with Reduced Ejection Fraction (HFrEF)',
       phase: 'Phase III',
       trialType: 'Interventional',
       interventionType: 'Device',
-      intervention: 'Left Ventricular Assist Device (LVAD)',
+      intervention: 'Left Ventricular Assist Device (HeartMate 3)',
       comparator: 'Optimal Medical Therapy',
       randomization: 'Randomized (2:1)',
       blinding: 'Open-label',
       primaryEndpoint: 'Composite of death, disabling stroke, or device malfunction at 2 years',
-      secondaryEndpoints: ['Quality of Life', 'Functional capacity (6MWT)', 'Hospitalizations'],
+      secondaryEndpoints: ['Quality of Life (Kansas City Cardiomyopathy)', 'Functional capacity (6MWT)', 'Hospitalizations'],
       sampleSize: 400,
       statisticalPower: '85% power to detect 25% relative risk reduction',
       status: 'Recruiting',
-      sponsor: 'Abbott Medical Devices'
+      sponsor: 'Abbott Medical Devices',
+      startDate: '2022-09-01',
+      estimatedCompletion: '2026-08-31',
+      currentEnrollment: 267,
+      sites: [
+        { name: 'Texas Heart Institute', type: 'Private', country: 'United States' },
+        { name: 'Cedars-Sinai Medical Center', type: 'Private', country: 'United States' },
+        { name: 'Massachusetts General Hospital', type: 'Academic', country: 'United States' },
+        { name: 'Toronto General Hospital', type: 'Academic', country: 'Canada' }
+      ],
+      successRateInSimilar: '74% in similar LVAD Phase III trials'
+    },
+    { 
+      id: 'NCT05234571', 
+      title: 'Immunotherapy Combination for Advanced Lung Cancer',
+      therapeuticArea: 'Oncology',
+      indication: 'Non-Small Cell Lung Cancer (NSCLC)',
+      phase: 'Phase II',
+      trialType: 'Interventional',
+      interventionType: 'Drug',
+      intervention: 'Pembrolizumab + Chemotherapy',
+      comparator: 'Chemotherapy alone',
+      randomization: 'Randomized (1:1)',
+      blinding: 'Double-blind',
+      primaryEndpoint: 'Progression-Free Survival',
+      secondaryEndpoints: ['Overall Survival', 'Objective Response Rate', 'Safety Profile'],
+      sampleSize: 300,
+      statisticalPower: '85% power to detect HR 0.7 for PFS',
+      status: 'Recruiting',
+      sponsor: 'Bristol-Myers Squibb',
+      startDate: '2023-05-01',
+      estimatedCompletion: '2026-12-31',
+      currentEnrollment: 189,
+      sites: [
+        { name: 'MD Anderson Cancer Center', type: 'Academic', country: 'United States' },
+        { name: 'Mayo Clinic', type: 'Academic', country: 'United States' },
+        { name: 'Private Oncology Associates', type: 'Private', country: 'United States' },
+        { name: 'Princess Margaret Cancer Centre', type: 'Academic', country: 'Canada' },
+        { name: 'The Christie NHS Foundation Trust', type: 'Hospital', country: 'United Kingdom' }
+      ],
+      successRateInSimilar: '68% in similar immunotherapy combination trials'
+    },
+    { 
+      id: 'NCT05234572', 
+      title: 'Novel Alzheimer\'s Drug in Early-Stage Disease',
+      therapeuticArea: 'Neurology',
+      indication: 'Early Alzheimer\'s Disease',
+      phase: 'Phase III',
+      trialType: 'Interventional',
+      interventionType: 'Drug',
+      intervention: 'Aducanumab (BIIB037)',
+      comparator: 'Placebo',
+      randomization: 'Randomized (1:1)',
+      blinding: 'Double-blind',
+      primaryEndpoint: 'Change in CDR-SB score at 78 weeks',
+      secondaryEndpoints: ['MMSE score change', 'Amyloid PET burden', 'Caregiver burden assessment'],
+      sampleSize: 1800,
+      statisticalPower: '90% power to detect 25% slowing of decline',
+      status: 'Recruiting',
+      sponsor: 'Biogen Inc.',
+      startDate: '2022-01-01',
+      estimatedCompletion: '2025-06-30',
+      currentEnrollment: 1234,
+      sites: [
+        { name: 'Mayo Clinic', type: 'Academic', country: 'United States' },
+        { name: 'Johns Hopkins University', type: 'Academic', country: 'United States' },
+        { name: 'University of California San Francisco', type: 'Academic', country: 'United States' },
+        { name: 'Karolinska Institute', type: 'Academic', country: 'Sweden' },
+        { name: 'University of Oxford', type: 'Academic', country: 'United Kingdom' }
+      ],
+      successRateInSimilar: '58% in similar Alzheimer\'s Phase III trials'
     }
   ];
 
@@ -415,6 +512,33 @@ const SearchPage = () => {
                           <div className="text-sm">{trial.statisticalPower}</div>
                         </div>
                       </div>
+
+                      {/* Sites Information */}
+                      {trial.sites && (
+                        <div>
+                          <div className="text-xs text-muted-foreground mb-2">
+                            Sites ({trial.sites.length} locations)
+                          </div>
+                          <div className="grid md:grid-cols-2 gap-2">
+                            {trial.sites.map((site: any, index: number) => (
+                              <div key={index} className="text-sm p-2 rounded bg-muted/20">
+                                <div className="font-medium">{site.name}</div>
+                                <div className="text-xs text-muted-foreground">
+                                  {site.type} • {site.country}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Success Rate in Similar Trials */}
+                      {trial.successRateInSimilar && (
+                        <div>
+                          <div className="text-xs text-muted-foreground mb-1">Success Rate in Similar Trials</div>
+                          <div className="text-sm font-medium text-primary">{trial.successRateInSimilar}</div>
+                        </div>
+                      )}
 
                       {/* Action Button */}
                       <div className="flex justify-end pt-2">
