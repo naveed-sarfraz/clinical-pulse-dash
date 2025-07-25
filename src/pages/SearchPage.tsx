@@ -4,383 +4,293 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Brain, Sparkles, Filter, CheckCircle } from "lucide-react";
+import { Search, ChevronDown, ChevronUp, ExternalLink } from "lucide-react";
 
 const SearchPage = () => {
   const [query, setQuery] = useState("");
-  const [searchFilters, setSearchFilters] = useState({
-    phase: "all",
-    status: "all",
-    sponsor: "all",
-    condition: "all",
-    country: "all",
-    year: "all"
-  });
-  const [parsedQuery, setParsedQuery] = useState<any>(null);
   const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [expandedTrial, setExpandedTrial] = useState<string | null>(null);
 
-  // Mock trial data for search results
+  // Enhanced mock trial data with required parameters
   const mockTrials = [
     { 
       id: 'NCT05234567', 
-      title: 'Phase II Trial of Gene Therapy for Glioblastoma', 
-      phase: 'Phase II', 
-      status: 'Recruiting', 
-      sponsor: 'Memorial Sloan Kettering', 
-      condition: 'Glioblastoma', 
-      intervention: 'Gene Therapy',
-      country: 'United States',
-      startDate: '2022-03-15',
-      estimatedCompletion: '2025-12-31',
-      enrollmentTarget: 120,
-      currentEnrollment: 67
+      title: 'Phase II Trial of Gene Therapy for Glioblastoma Multiforme',
+      therapeuticArea: 'Oncology',
+      indication: 'Glioblastoma Multiforme (GBM)',
+      phase: 'Phase II',
+      trialType: 'Interventional',
+      interventionType: 'Biologic',
+      intervention: 'CAR-T Gene Therapy Vector',
+      comparator: 'Standard of Care (Temozolomide + Radiation)',
+      randomization: 'Randomized (1:1)',
+      blinding: 'Open-label',
+      primaryEndpoint: 'Overall Survival at 12 months',
+      secondaryEndpoints: ['Progression-Free Survival', 'Quality of Life (EORTC QLQ-C30)', 'Safety and Tolerability'],
+      sampleSize: 120,
+      statisticalPower: '80% power to detect 30% improvement in OS',
+      status: 'Recruiting',
+      sponsor: 'Memorial Sloan Kettering Cancer Center'
     },
     { 
       id: 'NCT05234568', 
-      title: 'CAR-T Cell Therapy for Recurrent Brain Tumors', 
-      phase: 'Phase I/II', 
-      status: 'Active, not recruiting', 
-      sponsor: 'Duke University', 
-      condition: 'Glioblastoma', 
-      intervention: 'CAR-T Cell Therapy',
-      country: 'United States',
-      startDate: '2021-08-20',
-      estimatedCompletion: '2024-06-30',
-      enrollmentTarget: 30,
-      currentEnrollment: 28
+      title: 'Adaptive Platform Trial for Advanced Lung Cancer Immunotherapy',
+      therapeuticArea: 'Oncology',
+      indication: 'Non-Small Cell Lung Cancer (NSCLC)',
+      phase: 'Phase I/II',
+      trialType: 'Adaptive',
+      interventionType: 'Drug',
+      intervention: 'PD-L1 Inhibitor (Pembrolizumab)',
+      comparator: 'Historical controls',
+      randomization: 'Non-randomized',
+      blinding: 'Single-blind (Investigator)',
+      primaryEndpoint: 'Maximum Tolerated Dose (MTD) and Objective Response Rate',
+      secondaryEndpoints: ['Duration of Response', 'Pharmacokinetics', 'Biomarker Analysis'],
+      sampleSize: 75,
+      statisticalPower: '85% power to detect ORR >20%',
+      status: 'Active, not recruiting',
+      sponsor: 'Bristol-Myers Squibb'
     },
     { 
       id: 'NCT05234569', 
-      title: 'Immunotherapy Combined with Radiation for GBM', 
-      phase: 'Phase III', 
-      status: 'Recruiting', 
-      sponsor: 'Bristol-Myers Squibb', 
-      condition: 'Glioblastoma', 
-      intervention: 'Immunotherapy',
-      country: 'United States',
-      startDate: '2023-01-10',
-      estimatedCompletion: '2026-08-15',
-      enrollmentTarget: 300,
-      currentEnrollment: 145
+      title: 'Digital Therapeutics for Diabetes Management Observational Study',
+      therapeuticArea: 'Endocrinology',
+      indication: 'Type 2 Diabetes Mellitus',
+      phase: 'Phase IV',
+      trialType: 'Observational',
+      interventionType: 'Digital',
+      intervention: 'Mobile Health Application with AI Coaching',
+      comparator: 'Standard diabetes care',
+      randomization: 'Cluster randomized',
+      blinding: 'Double-blind',
+      primaryEndpoint: 'Change in HbA1c from baseline at 6 months',
+      secondaryEndpoints: ['Patient-reported outcomes', 'Healthcare utilization', 'Cost-effectiveness'],
+      sampleSize: 500,
+      statisticalPower: '90% power to detect 0.5% reduction in HbA1c',
+      status: 'Recruiting',
+      sponsor: 'Joslin Diabetes Center'
+    },
+    { 
+      id: 'NCT05234570', 
+      title: 'Cardiac Device Trial for Heart Failure with Reduced Ejection Fraction',
+      therapeuticArea: 'Cardiology',
+      indication: 'Heart Failure with Reduced Ejection Fraction (HFrEF)',
+      phase: 'Phase III',
+      trialType: 'Interventional',
+      interventionType: 'Device',
+      intervention: 'Left Ventricular Assist Device (LVAD)',
+      comparator: 'Optimal Medical Therapy',
+      randomization: 'Randomized (2:1)',
+      blinding: 'Open-label',
+      primaryEndpoint: 'Composite of death, disabling stroke, or device malfunction at 2 years',
+      secondaryEndpoints: ['Quality of Life', 'Functional capacity (6MWT)', 'Hospitalizations'],
+      sampleSize: 400,
+      statisticalPower: '85% power to detect 25% relative risk reduction',
+      status: 'Recruiting',
+      sponsor: 'Abbott Medical Devices'
     }
   ];
 
-  // Natural language processing function
-  const parseNaturalLanguageQuery = (queryText: string) => {
-    const lowerQuery = queryText.toLowerCase();
-    const parsed = {
-      phase: null as string | null,
-      condition: null as string | null,
-      intervention: null as string | null,
-      country: null as string | null,
-      yearAfter: null as number | null,
-      status: null as string | null
-    };
-
-    // Extract phase
-    if (lowerQuery.includes('phase i') && !lowerQuery.includes('phase ii') && !lowerQuery.includes('phase iii')) {
-      parsed.phase = 'Phase I';
-    } else if (lowerQuery.includes('phase ii')) {
-      parsed.phase = 'Phase II';
-    } else if (lowerQuery.includes('phase iii')) {
-      parsed.phase = 'Phase III';
-    } else if (lowerQuery.includes('phase iv')) {
-      parsed.phase = 'Phase IV';
-    }
-
-    // Extract condition
-    if (lowerQuery.includes('glioblastoma') || lowerQuery.includes('gbm')) {
-      parsed.condition = 'Glioblastoma';
-    } else if (lowerQuery.includes('lung cancer')) {
-      parsed.condition = 'Lung Cancer';
-    } else if (lowerQuery.includes('breast cancer')) {
-      parsed.condition = 'Breast Cancer';
-    }
-
-    // Extract intervention
-    if (lowerQuery.includes('gene therapy')) {
-      parsed.intervention = 'Gene Therapy';
-    } else if (lowerQuery.includes('immunotherapy')) {
-      parsed.intervention = 'Immunotherapy';
-    } else if (lowerQuery.includes('car-t')) {
-      parsed.intervention = 'CAR-T Cell Therapy';
-    }
-
-    // Extract country
-    if (lowerQuery.includes('u.s.') || lowerQuery.includes('united states') || lowerQuery.includes('usa')) {
-      parsed.country = 'United States';
-    } else if (lowerQuery.includes('china')) {
-      parsed.country = 'China';
-    } else if (lowerQuery.includes('germany')) {
-      parsed.country = 'Germany';
-    }
-
-    // Extract year
-    const yearMatch = lowerQuery.match(/after (\d{4})/);
-    if (yearMatch) {
-      parsed.yearAfter = parseInt(yearMatch[1]);
-    }
-
-    // Extract status
-    if (lowerQuery.includes('recruiting')) {
-      parsed.status = 'Recruiting';
-    } else if (lowerQuery.includes('completed')) {
-      parsed.status = 'Completed';
-    }
-
-    return parsed;
-  };
-
-  // Filter trials based on parsed query
-  const filterTrials = (trials: any[], parsedQuery: any) => {
-    return trials.filter(trial => {
-      if (parsedQuery.phase && trial.phase !== parsedQuery.phase) return false;
-      if (parsedQuery.condition && trial.condition !== parsedQuery.condition) return false;
-      if (parsedQuery.intervention && trial.intervention !== parsedQuery.intervention) return false;
-      if (parsedQuery.country && trial.country !== parsedQuery.country) return false;
-      if (parsedQuery.status && trial.status !== parsedQuery.status) return false;
-      if (parsedQuery.yearAfter) {
-        const trialYear = new Date(trial.startDate).getFullYear();
-        if (trialYear <= parsedQuery.yearAfter) return false;
-      }
-      return true;
-    });
-  };
-
-  const handleQuerySubmit = (e: React.FormEvent) => {
+  const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (!query.trim()) return;
-
-    // Parse the natural language query
-    const parsed = parseNaturalLanguageQuery(query);
-    setParsedQuery(parsed);
-
-    // Filter trials based on parsed query
-    const filtered = filterTrials(mockTrials, parsed);
+    
+    // Simple search filtering - in real app would be more sophisticated
+    const filtered = mockTrials.filter(trial => 
+      trial.title.toLowerCase().includes(query.toLowerCase()) ||
+      trial.therapeuticArea.toLowerCase().includes(query.toLowerCase()) ||
+      trial.indication.toLowerCase().includes(query.toLowerCase()) ||
+      trial.intervention.toLowerCase().includes(query.toLowerCase())
+    );
     setSearchResults(filtered);
   };
 
+  const toggleTrialExpanded = (trialId: string) => {
+    setExpandedTrial(expandedTrial === trialId ? null : trialId);
+  };
+
   return (
-    <div className="space-y-6">
-      {/* Page Header */}
-      <div>
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-          Intelligent Search
-        </h1>
-        <p className="text-muted-foreground mt-2">
-          Natural language search for clinical trials with advanced filtering
-        </p>
+    <div className="max-w-4xl mx-auto space-y-8 p-6">
+      {/* Minimalist Header */}
+      <div className="text-center space-y-2">
+        <h1 className="text-2xl font-medium text-foreground">Clinical Trial Search</h1>
+        <p className="text-sm text-muted-foreground">Search and explore clinical trials with detailed study parameters</p>
       </div>
 
-      {/* Search Interface */}
-      <Card className="border-0 shadow-card">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Brain className="h-5 w-5 text-primary" />
-            Natural Language Search
-            <Sparkles className="h-4 w-4 text-accent" />
-          </CardTitle>
-          <CardDescription>
-            Ask questions like: "Show Phase II trials for glioblastoma using gene therapy started after 2020 in the U.S."
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {/* Search Input */}
-          <form onSubmit={handleQuerySubmit} className="space-y-4">
+      {/* Simple Search Bar */}
+      <Card className="border-0 shadow-sm">
+        <CardContent className="p-6">
+          <form onSubmit={handleSearch} className="space-y-4">
             <div className="relative">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Describe the trials you're looking for..."
+                placeholder="Search trials by condition, intervention, or therapeutic area..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="pl-10 h-12 text-base"
+                className="pl-10 h-12 border-muted focus-visible:ring-1"
               />
               <Button 
                 type="submit" 
                 size="sm"
-                className="absolute right-2 top-2"
+                className="absolute right-2 top-2 h-8"
               >
-                <Sparkles className="h-4 w-4 mr-1" />
                 Search
               </Button>
             </div>
           </form>
-
-          {/* Advanced Filters */}
-          <div className="space-y-4">
-            <h3 className="text-sm font-medium flex items-center gap-2">
-              <Filter className="h-4 w-4" />
-              Advanced Filters
-            </h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-              <Select value={searchFilters.phase} onValueChange={(value) => setSearchFilters(prev => ({...prev, phase: value}))}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Phase" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Phases</SelectItem>
-                  <SelectItem value="phase1">Phase I</SelectItem>
-                  <SelectItem value="phase2">Phase II</SelectItem>
-                  <SelectItem value="phase3">Phase III</SelectItem>
-                  <SelectItem value="phase4">Phase IV</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <Select value={searchFilters.status} onValueChange={(value) => setSearchFilters(prev => ({...prev, status: value}))}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Status</SelectItem>
-                  <SelectItem value="recruiting">Recruiting</SelectItem>
-                  <SelectItem value="active">Active</SelectItem>
-                  <SelectItem value="completed">Completed</SelectItem>
-                  <SelectItem value="terminated">Terminated</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <Select value={searchFilters.sponsor} onValueChange={(value) => setSearchFilters(prev => ({...prev, sponsor: value}))}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Sponsor" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Sponsors</SelectItem>
-                  <SelectItem value="industry">Industry</SelectItem>
-                  <SelectItem value="academic">Academic</SelectItem>
-                  <SelectItem value="government">Government</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <Select value={searchFilters.condition} onValueChange={(value) => setSearchFilters(prev => ({...prev, condition: value}))}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Condition" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Conditions</SelectItem>
-                  <SelectItem value="oncology">Oncology</SelectItem>
-                  <SelectItem value="cardiology">Cardiology</SelectItem>
-                  <SelectItem value="neurology">Neurology</SelectItem>
-                  <SelectItem value="immunology">Immunology</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <Select value={searchFilters.country} onValueChange={(value) => setSearchFilters(prev => ({...prev, country: value}))}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Country" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Countries</SelectItem>
-                  <SelectItem value="us">United States</SelectItem>
-                  <SelectItem value="china">China</SelectItem>
-                  <SelectItem value="germany">Germany</SelectItem>
-                  <SelectItem value="uk">United Kingdom</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <Select value={searchFilters.year} onValueChange={(value) => setSearchFilters(prev => ({...prev, year: value}))}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Year" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Years</SelectItem>
-                  <SelectItem value="2024">2024</SelectItem>
-                  <SelectItem value="2023">2023</SelectItem>
-                  <SelectItem value="2022">2022</SelectItem>
-                  <SelectItem value="2021">2021</SelectItem>
-                  <SelectItem value="2020">2020+</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          {/* Quick Examples */}
-          <div className="space-y-2">
-            <div className="text-sm font-medium text-foreground">Quick Examples:</div>
-            <div className="flex flex-wrap gap-2">
-              {[
-                "Phase II oncology trials in the US",
-                "Gene therapy trials for brain cancer",
-                "Recruiting immunotherapy studies",
-                "Pfizer sponsored trials after 2022"
-              ].map((example) => (
-                <Badge 
-                  key={example}
-                  variant="outline" 
-                  className="cursor-pointer hover:bg-muted/50 transition-colors"
-                  onClick={() => setQuery(example)}
-                >
-                  {example}
-                </Badge>
-              ))}
-            </div>
-          </div>
-
-          {/* Parsed Query Display */}
-          {parsedQuery && (
-            <div className="bg-muted/30 rounded-lg p-4 space-y-2">
-              <div className="text-sm font-medium flex items-center gap-2">
-                <Filter className="h-4 w-4" />
-                Parsed Search Criteria:
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {Object.entries(parsedQuery).map(([key, value]) => (
-                  value && (
-                    <Badge key={key} variant="secondary" className="text-xs">
-                      {key}: {String(value)}
-                    </Badge>
-                  )
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Search Results */}
-          {searchResults.length > 0 && (
-            <div className="space-y-4">
-              <div className="text-sm font-medium flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-green-500" />
-                Found {searchResults.length} matching trials:
-              </div>
-              <div className="space-y-3">
-                {searchResults.map((trial) => (
-                  <Card key={trial.id} className="border border-muted">
-                    <CardContent className="p-4">
-                      <div className="flex justify-between items-start mb-2">
-                        <div>
-                          <h4 className="font-medium text-sm">{trial.title}</h4>
-                          <p className="text-xs text-muted-foreground">{trial.id}</p>
-                        </div>
-                        <Badge variant={trial.status === 'Recruiting' ? 'default' : 'secondary'}>
-                          {trial.status}
-                        </Badge>
-                      </div>
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
-                        <div>
-                          <span className="text-muted-foreground">Phase:</span>
-                          <p className="font-medium">{trial.phase}</p>
-                        </div>
-                        <div>
-                          <span className="text-muted-foreground">Sponsor:</span>
-                          <p className="font-medium">{trial.sponsor}</p>
-                        </div>
-                        <div>
-                          <span className="text-muted-foreground">Condition:</span>
-                          <p className="font-medium">{trial.condition}</p>
-                        </div>
-                        <div>
-                          <span className="text-muted-foreground">Enrollment:</span>
-                          <p className="font-medium">{trial.currentEnrollment}/{trial.enrollmentTarget}</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          )}
         </CardContent>
       </Card>
+
+      {/* Search Results */}
+      {searchResults.length > 0 && (
+        <div className="space-y-4">
+          <div className="text-sm text-muted-foreground">
+            {searchResults.length} trial{searchResults.length !== 1 ? 's' : ''} found
+          </div>
+          
+          {searchResults.map((trial) => (
+            <Card key={trial.id} className="border border-muted/50 hover:shadow-sm transition-shadow">
+              <CardHeader className="pb-3">
+                <div className="flex justify-between items-start gap-4">
+                  <div className="flex-1 min-w-0">
+                    <CardTitle className="text-base font-medium leading-tight mb-2">
+                      {trial.title}
+                    </CardTitle>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <span>{trial.id}</span>
+                      <span>•</span>
+                      <span>{trial.sponsor}</span>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end gap-2">
+                    <Badge variant={trial.status === 'Recruiting' ? 'default' : 'secondary'} className="text-xs">
+                      {trial.status}
+                    </Badge>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => toggleTrialExpanded(trial.id)}
+                      className="h-8 px-2"
+                    >
+                      {expandedTrial === trial.id ? (
+                        <ChevronUp className="h-4 w-4" />
+                      ) : (
+                        <ChevronDown className="h-4 w-4" />
+                      )}
+                    </Button>
+                  </div>
+                </div>
+              </CardHeader>
+
+              <CardContent className="pt-0">
+                {/* Key Trial Info - Always Visible */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4 text-xs">
+                  <div>
+                    <div className="text-muted-foreground mb-1">Therapeutic Area</div>
+                    <div className="font-medium">{trial.therapeuticArea}</div>
+                  </div>
+                  <div>
+                    <div className="text-muted-foreground mb-1">Phase</div>
+                    <div className="font-medium">{trial.phase}</div>
+                  </div>
+                  <div>
+                    <div className="text-muted-foreground mb-1">Trial Type</div>
+                    <div className="font-medium">{trial.trialType}</div>
+                  </div>
+                  <div>
+                    <div className="text-muted-foreground mb-1">Intervention Type</div>
+                    <div className="font-medium">{trial.interventionType}</div>
+                  </div>
+                </div>
+
+                {/* Expanded Details */}
+                {expandedTrial === trial.id && (
+                  <div className="border-t border-muted/30 pt-4 space-y-4">
+                    <div className="grid gap-4">
+                      {/* Indication */}
+                      <div>
+                        <div className="text-xs text-muted-foreground mb-1">Indication</div>
+                        <div className="text-sm">{trial.indication}</div>
+                      </div>
+
+                      {/* Intervention & Comparator */}
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div>
+                          <div className="text-xs text-muted-foreground mb-1">Intervention</div>
+                          <div className="text-sm">{trial.intervention}</div>
+                        </div>
+                        <div>
+                          <div className="text-xs text-muted-foreground mb-1">Comparator/Control</div>
+                          <div className="text-sm">{trial.comparator}</div>
+                        </div>
+                      </div>
+
+                      {/* Study Design */}
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div>
+                          <div className="text-xs text-muted-foreground mb-1">Randomization</div>
+                          <div className="text-sm">{trial.randomization}</div>
+                        </div>
+                        <div>
+                          <div className="text-xs text-muted-foreground mb-1">Blinding</div>
+                          <div className="text-sm">{trial.blinding}</div>
+                        </div>
+                      </div>
+
+                      {/* Endpoints */}
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div>
+                          <div className="text-xs text-muted-foreground mb-1">Primary Endpoint</div>
+                          <div className="text-sm">{trial.primaryEndpoint}</div>
+                        </div>
+                        <div>
+                          <div className="text-xs text-muted-foreground mb-1">Secondary Endpoints</div>
+                          <div className="text-sm">
+                            <ul className="list-disc list-inside space-y-1">
+                              {trial.secondaryEndpoints.map((endpoint: string, index: number) => (
+                                <li key={index}>{endpoint}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Sample Size & Statistics */}
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div>
+                          <div className="text-xs text-muted-foreground mb-1">Sample Size</div>
+                          <div className="text-sm">{trial.sampleSize} participants</div>
+                        </div>
+                        <div>
+                          <div className="text-xs text-muted-foreground mb-1">Statistical Power</div>
+                          <div className="text-sm">{trial.statisticalPower}</div>
+                        </div>
+                      </div>
+
+                      {/* Action Button */}
+                      <div className="flex justify-end pt-2">
+                        <Button variant="outline" size="sm" className="h-8">
+                          <ExternalLink className="h-3 w-3 mr-1" />
+                          View Full Details
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+
+      {/* Empty State */}
+      {query && searchResults.length === 0 && (
+        <div className="text-center py-12 text-muted-foreground">
+          <Search className="h-12 w-12 mx-auto mb-4 opacity-50" />
+          <p>No trials found matching your search criteria.</p>
+          <p className="text-sm">Try searching for different terms or conditions.</p>
+        </div>
+      )}
     </div>
   );
 };
