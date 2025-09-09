@@ -19,190 +19,179 @@ const SearchPage = () => {
     status: ""
   });
 
-  // Rich trial data from dashboard with all required parameters
+  // Gene therapy pipeline data focused on late preclinical companies in target hubs
   const mockTrials = [
-    { 
-      id: 'NCT05234567', 
-      title: 'Phase II Trial of Gene Therapy for Glioblastoma Multiforme',
-      therapeuticArea: 'Oncology',
-      indication: 'Glioblastoma Multiforme (GBM)',
-      phase: 'Phase II',
-      trialType: 'Interventional',
-      interventionType: 'Biologic',
-      intervention: 'Gene Therapy Vector (CAR-T)',
-      comparator: 'Standard of Care (Temozolomide + Radiation)',
-      randomization: 'Randomized (1:1)',
-      blinding: 'Open-label',
-      primaryEndpoint: 'Overall Survival at 12 months',
-      secondaryEndpoints: ['Progression-Free Survival', 'Quality of Life (EORTC QLQ-C30)', 'Safety and Tolerability'],
-      sampleSize: 120,
-      statisticalPower: '80% power to detect 30% improvement in OS',
-      status: 'Recruiting',
-      sponsor: 'Memorial Sloan Kettering Cancer Center',
-      startDate: '2022-03-15',
-      estimatedCompletion: '2025-12-31',
-      currentEnrollment: 67,
+    {
+      id: "NCT05234567",
+      title: "Novel AAV-CGF166 Gene Therapy for Congenital Hearing Loss",
+      therapeuticArea: "Gene Therapy - Rare Diseases",
+      indication: "Congenital Hearing Loss",
+      phase: "Late Preclinical",
+      trialType: "IND-Enabling Studies",
+      interventionType: "Gene Therapy",
+      intervention: "AAV-CGF166 (Inner Ear Gene Therapy)",
+      comparator: "Natural History Control",
+      randomization: "Single-arm, Open-label",
+      blinding: "None",
+      primaryEndpoint: "Safety and preliminary efficacy in hearing restoration",
+      secondaryEndpoints: ["Audiometric improvements", "Quality of life measures", "Long-term safety"],
+      sampleSize: 24,
+      statisticalPower: "80% power to detect clinically meaningful hearing improvement",
+      status: "Manufacturing Scale-Up",
+      sponsor: "Decibel Therapeutics",
+      startDate: "Expected Q2 2024",
+      estimatedCompletion: "Phase I: Q4 2025",
+      currentEnrollment: 0,
       sites: [
-        { name: 'Memorial Sloan Kettering Cancer Center', type: 'Academic', country: 'United States' },
-        { name: 'MD Anderson Cancer Center', type: 'Academic', country: 'United States' },
-        { name: 'Dana-Farber Cancer Institute', type: 'Academic', country: 'United States' }
+        { name: "Boston Children's Hospital", type: "Academic Medical Center", country: "United States", location: "Boston, MA" },
+        { name: "UCSF Clinical Research Center", type: "Academic Medical Center", country: "United States", location: "San Francisco, CA" }
       ],
-      successRateInSimilar: '42% in similar GBM gene therapy trials'
+      successRateInSimilar: "72% for AAV-based therapies in similar rare disease indications",
+      partnershipStatus: "Unpartnered - Actively seeking development partner",
+      developmentStage: "Late Preclinical (IND submission planned Q1 2024)",
+      keyMilestones: ["IND filing Q1 2024", "Phase I initiation Q2 2024", "First patient dosed Q3 2024"],
+      targetProfile: "Emerging biotech, 18 months to clinical entry",
+      lastUpdate: "2024-01-10"
     },
-    { 
-      id: 'NCT05234568', 
-      title: 'CAR-T Cell Therapy for Recurrent Brain Tumors',
-      therapeuticArea: 'Oncology',
-      indication: 'Recurrent Glioblastoma',
-      phase: 'Phase I/II',
-      trialType: 'Adaptive',
-      interventionType: 'Biologic',
-      intervention: 'CAR-T Cell Therapy (EGFRvIII-targeted)',
-      comparator: 'Historical controls',
-      randomization: 'Non-randomized',
-      blinding: 'Single-blind (Investigator)',
-      primaryEndpoint: 'Maximum Tolerated Dose (MTD) and Objective Response Rate',
-      secondaryEndpoints: ['Duration of Response', 'Pharmacokinetics', 'Biomarker Analysis'],
-      sampleSize: 30,
-      statisticalPower: '85% power to detect ORR >20%',
-      status: 'Active, not recruiting',
-      sponsor: 'Duke University Medical Center',
-      startDate: '2021-08-20',
-      estimatedCompletion: '2024-06-30',
-      currentEnrollment: 28,
+    {
+      id: "NCT05789012",
+      title: "Base-Edited Therapeutic for Beta-Thalassemia",
+      therapeuticArea: "Gene Therapy - Blood Disorders",
+      indication: "Beta-Thalassemia",
+      phase: "Late Preclinical",
+      trialType: "CMC Development",
+      interventionType: "Gene Therapy",
+      intervention: "Prime-edited autologous CD34+ cells",
+      comparator: "Standard of care (transfusions + iron chelation)",
+      randomization: "Single-arm study",
+      blinding: "Open-label",
+      primaryEndpoint: "Safety and manufacturing feasibility",
+      secondaryEndpoints: ["Hemoglobin levels", "Transfusion independence", "Vector integration analysis"],
+      sampleSize: 12,
+      statisticalPower: "90% power to detect transfusion independence in >50% patients",
+      status: "Regulatory Preparation",
+      sponsor: "Prime Medicine",
+      startDate: "Expected Q3 2024",
+      estimatedCompletion: "Phase I: Q2 2026",
+      currentEnrollment: 0,
       sites: [
-        { name: 'Duke University Medical Center', type: 'Academic', country: 'United States' },
-        { name: 'University of Pennsylvania', type: 'Academic', country: 'United States' }
+        { name: "Boston Children's Hospital", type: "Academic Medical Center", country: "United States", location: "Boston, MA" },
+        { name: "Stanford Medicine", type: "Academic Medical Center", country: "United States", location: "San Francisco, CA" }
       ],
-      successRateInSimilar: '38% in similar CAR-T Phase I/II trials'
+      successRateInSimilar: "65% for base editing approaches in hereditary blood disorders",
+      partnershipStatus: "Unpartnered - Active partnership discussions with multiple pharma",
+      developmentStage: "Late Preclinical (IND submission planned Q2 2024)",
+      keyMilestones: ["GMP manufacturing Q1 2024", "IND filing Q2 2024", "Phase I start Q3 2024"],
+      targetProfile: "Emerging biotech, 6 months to clinical entry",
+      lastUpdate: "2024-01-05"
     },
-    { 
-      id: 'NCT05234569', 
-      title: 'Digital Therapeutics for Type 2 Diabetes Management',
-      therapeuticArea: 'Endocrinology',
-      indication: 'Type 2 Diabetes Mellitus',
-      phase: 'Phase IV',
-      trialType: 'Observational',
-      interventionType: 'Digital',
-      intervention: 'Mobile Health Application with AI Coaching',
-      comparator: 'Standard diabetes care',
-      randomization: 'Cluster randomized',
-      blinding: 'Double-blind',
-      primaryEndpoint: 'Change in HbA1c from baseline at 6 months',
-      secondaryEndpoints: ['Patient-reported outcomes', 'Healthcare utilization', 'Cost-effectiveness'],
-      sampleSize: 500,
-      statisticalPower: '90% power to detect 0.5% reduction in HbA1c',
-      status: 'Recruiting',
-      sponsor: 'Joslin Diabetes Center',
-      startDate: '2023-01-10',
-      estimatedCompletion: '2024-12-31',
-      currentEnrollment: 312,
+    {
+      id: "NCT05456789",
+      title: "Lipid Nanoparticle-Delivered Gene Therapy for Duchenne Muscular Dystrophy",
+      therapeuticArea: "Gene Therapy - Neuromuscular",
+      indication: "Duchenne Muscular Dystrophy",
+      phase: "Late Preclinical",
+      trialType: "IND-Enabling Studies",
+      interventionType: "Gene Therapy",
+      intervention: "LNP-delivered microdystrophin gene therapy",
+      comparator: "Natural history controls",
+      randomization: "Open-label, single-arm",
+      blinding: "None",
+      primaryEndpoint: "Safety and dystrophin expression in muscle biopsies",
+      secondaryEndpoints: ["Functional assessments", "Biomarker analysis", "Pharmacokinetics"],
+      sampleSize: 18,
+      statisticalPower: "85% power to detect meaningful dystrophin restoration",
+      status: "Regulatory Preparation",
+      sponsor: "Solid Biosciences",
+      startDate: "Expected Q4 2024",
+      estimatedCompletion: "Phase I: Q4 2026",
+      currentEnrollment: 0,
       sites: [
-        { name: 'Joslin Diabetes Center', type: 'Academic', country: 'United States' },
-        { name: 'Cleveland Clinic', type: 'Academic', country: 'United States' },
-        { name: 'Kaiser Permanente', type: 'Private', country: 'United States' },
-        { name: 'Scripps Health', type: 'Private', country: 'United States' }
+        { name: "Boston Children's Hospital", type: "Academic Medical Center", country: "United States", location: "Boston, MA" },
+        { name: "UCSF Benioff Children's", type: "Pediatric Hospital", country: "United States", location: "San Francisco, CA" },
+        { name: "Rady Children's Hospital", type: "Pediatric Hospital", country: "United States", location: "San Diego, CA" }
       ],
-      successRateInSimilar: '78% in similar digital diabetes intervention studies'
+      successRateInSimilar: "58% for systemic gene delivery in neuromuscular disorders",
+      partnershipStatus: "Unpartnered - Seeking strategic alliance for development and commercialization",
+      developmentStage: "Late Preclinical (IND targeted Q3 2024)",
+      keyMilestones: ["Toxicology studies completion Q2 2024", "IND submission Q3 2024"],
+      targetProfile: "Public biotech, 8 months to clinical entry",
+      lastUpdate: "2024-01-03"
     },
-    { 
-      id: 'NCT05234570', 
-      title: 'Left Ventricular Assist Device Trial for Heart Failure',
-      therapeuticArea: 'Cardiology',
-      indication: 'Heart Failure with Reduced Ejection Fraction (HFrEF)',
-      phase: 'Phase III',
-      trialType: 'Interventional',
-      interventionType: 'Device',
-      intervention: 'Left Ventricular Assist Device (HeartMate 3)',
-      comparator: 'Optimal Medical Therapy',
-      randomization: 'Randomized (2:1)',
-      blinding: 'Open-label',
-      primaryEndpoint: 'Composite of death, disabling stroke, or device malfunction at 2 years',
-      secondaryEndpoints: ['Quality of Life (Kansas City Cardiomyopathy)', 'Functional capacity (6MWT)', 'Hospitalizations'],
-      sampleSize: 400,
-      statisticalPower: '85% power to detect 25% relative risk reduction',
-      status: 'Recruiting',
-      sponsor: 'Abbott Medical Devices',
-      startDate: '2022-09-01',
-      estimatedCompletion: '2026-08-31',
-      currentEnrollment: 267,
+    {
+      id: "NCT05678901",
+      title: "CRISPR-Based In Vivo Gene Editing for Hereditary Transthyretin Amyloidosis",
+      therapeuticArea: "Gene Therapy - Rare Diseases",
+      indication: "Hereditary Transthyretin Amyloidosis (hATTR)",
+      phase: "Late Preclinical",
+      trialType: "IND-Enabling Studies",
+      interventionType: "Gene Therapy",
+      intervention: "CRISPR-Cas9 in vivo gene editing (NTLA-2001)",
+      comparator: "Historical controls",
+      randomization: "Single-arm, dose-escalation",
+      blinding: "Open-label",
+      primaryEndpoint: "Safety and TTR protein reduction",
+      secondaryEndpoints: ["Pharmacokinetics", "Biomarker analysis", "Clinical assessments"],
+      sampleSize: 20,
+      statisticalPower: "90% power to detect >75% TTR reduction",
+      status: "IND-Enabling Studies",
+      sponsor: "Intellia Therapeutics",
+      startDate: "Expected Q2 2024",
+      estimatedCompletion: "Phase I: Q4 2025",
+      currentEnrollment: 0,
       sites: [
-        { name: 'Texas Heart Institute', type: 'Private', country: 'United States' },
-        { name: 'Cedars-Sinai Medical Center', type: 'Private', country: 'United States' },
-        { name: 'Massachusetts General Hospital', type: 'Academic', country: 'United States' },
-        { name: 'Toronto General Hospital', type: 'Academic', country: 'Canada' }
+        { name: "Mass General Brigham", type: "Academic Medical Center", country: "United States", location: "Boston, MA" },
+        { name: "Stanford Medicine", type: "Academic Medical Center", country: "United States", location: "San Francisco, CA" }
       ],
-      successRateInSimilar: '74% in similar LVAD Phase III trials'
+      successRateInSimilar: "76% for in vivo CRISPR applications in similar indications",
+      partnershipStatus: "Unpartnered - Open to strategic partnerships for global development",
+      developmentStage: "Late Preclinical (IND submission imminent)",
+      keyMilestones: ["IND filing Q1 2024", "First patient dosed Q2 2024"],
+      targetProfile: "Public biotech, 3 months to clinical entry",
+      lastUpdate: "2024-01-12"
     },
-    { 
-      id: 'NCT05234571', 
-      title: 'Immunotherapy Combination for Advanced Lung Cancer',
-      therapeuticArea: 'Oncology',
-      indication: 'Non-Small Cell Lung Cancer (NSCLC)',
-      phase: 'Phase II',
-      trialType: 'Interventional',
-      interventionType: 'Drug',
-      intervention: 'Pembrolizumab + Chemotherapy',
-      comparator: 'Chemotherapy alone',
-      randomization: 'Randomized (1:1)',
-      blinding: 'Double-blind',
-      primaryEndpoint: 'Progression-Free Survival',
-      secondaryEndpoints: ['Overall Survival', 'Objective Response Rate', 'Safety Profile'],
-      sampleSize: 300,
-      statisticalPower: '85% power to detect HR 0.7 for PFS',
-      status: 'Recruiting',
-      sponsor: 'Bristol-Myers Squibb',
-      startDate: '2023-05-01',
-      estimatedCompletion: '2026-12-31',
-      currentEnrollment: 189,
+    {
+      id: "NCT05890123",
+      title: "Adeno-Associated Virus Gene Therapy for Spinal Muscular Atrophy Type 2/3",
+      therapeuticArea: "Gene Therapy - Neuromuscular",
+      indication: "Spinal Muscular Atrophy Type 2/3",
+      phase: "Late Preclinical",
+      trialType: "Manufacturing Optimization",
+      interventionType: "Gene Therapy",
+      intervention: "AAV9-SMN gene therapy (next-generation vector)",
+      comparator: "Natural history/current standard of care",
+      randomization: "Single-arm study",
+      blinding: "Open-label",
+      primaryEndpoint: "Safety and motor function improvement",
+      secondaryEndpoints: ["SMN protein expression", "Survival", "Quality of life"],
+      sampleSize: 15,
+      statisticalPower: "80% power to detect clinically meaningful motor improvement",
+      status: "CMC Development",
+      sponsor: "AveXis (Novartis Gene Therapies)",
+      startDate: "Expected Q1 2025",
+      estimatedCompletion: "Phase I: Q3 2027",
+      currentEnrollment: 0,
       sites: [
-        { name: 'MD Anderson Cancer Center', type: 'Academic', country: 'United States' },
-        { name: 'Mayo Clinic', type: 'Academic', country: 'United States' },
-        { name: 'Private Oncology Associates', type: 'Private', country: 'United States' },
-        { name: 'Princess Margaret Cancer Centre', type: 'Academic', country: 'Canada' },
-        { name: 'The Christie NHS Foundation Trust', type: 'Hospital', country: 'United Kingdom' }
+        { name: "Boston Children's Hospital", type: "Academic Medical Center", country: "United States", location: "Boston, MA" },
+        { name: "UCSF Benioff Children's", type: "Pediatric Hospital", country: "United States", location: "San Francisco, CA" },
+        { name: "Shanghai Children's Hospital", type: "Pediatric Hospital", country: "China", location: "Shanghai, China" }
       ],
-      successRateInSimilar: '68% in similar immunotherapy combination trials'
-    },
-    { 
-      id: 'NCT05234572', 
-      title: 'Novel Alzheimer\'s Drug in Early-Stage Disease',
-      therapeuticArea: 'Neurology',
-      indication: 'Early Alzheimer\'s Disease',
-      phase: 'Phase III',
-      trialType: 'Interventional',
-      interventionType: 'Drug',
-      intervention: 'Aducanumab (BIIB037)',
-      comparator: 'Placebo',
-      randomization: 'Randomized (1:1)',
-      blinding: 'Double-blind',
-      primaryEndpoint: 'Change in CDR-SB score at 78 weeks',
-      secondaryEndpoints: ['MMSE score change', 'Amyloid PET burden', 'Caregiver burden assessment'],
-      sampleSize: 1800,
-      statisticalPower: '90% power to detect 25% slowing of decline',
-      status: 'Recruiting',
-      sponsor: 'Biogen Inc.',
-      startDate: '2022-01-01',
-      estimatedCompletion: '2025-06-30',
-      currentEnrollment: 1234,
-      sites: [
-        { name: 'Mayo Clinic', type: 'Academic', country: 'United States' },
-        { name: 'Johns Hopkins University', type: 'Academic', country: 'United States' },
-        { name: 'University of California San Francisco', type: 'Academic', country: 'United States' },
-        { name: 'Karolinska Institute', type: 'Academic', country: 'Sweden' },
-        { name: 'University of Oxford', type: 'Academic', country: 'United Kingdom' }
-      ],
-      successRateInSimilar: '58% in similar Alzheimer\'s Phase III trials'
+      successRateInSimilar: "71% for AAV-based therapies in neuromuscular disorders",
+      partnershipStatus: "Novartis Internal Program - Potential out-licensing opportunities",
+      developmentStage: "Late Preclinical (Manufacturing optimization phase)",
+      keyMilestones: ["Process optimization Q4 2024", "IND filing Q4 2024"],
+      targetProfile: "Large pharma subsidiary, 12 months to clinical entry",
+      lastUpdate: "2023-12-28"
     }
   ];
 
   const exampleQueries = [
-    "glioblastoma Phase II",
-    "diabetes digital therapeutics",
-    "heart failure device trials",
-    "lung cancer immunotherapy Phase I",
-    "Alzheimer's drug trials recruiting",
-    "pediatric oncology adaptive trials"
+    "Late preclinical gene therapy companies in Boston targeting rare diseases",
+    "Unpartnered AAV-based therapies in San Francisco approaching Phase I",
+    "Cell therapy biotech firms in Shanghai with upcoming clinical milestones",
+    "Gene editing companies in San Diego seeking development partnerships",
+    "Emerging biotech with novel delivery platforms for gene therapies",
+    "Late-stage preclinical companies developing in vivo gene therapies"
   ];
 
   const handleSearch = (e: React.FormEvent) => {
@@ -262,11 +251,12 @@ const SearchPage = () => {
       <div className="text-center space-y-4 py-8">
         <div className="flex items-center justify-center gap-2 mb-4">
           <Search className="h-8 w-8 text-primary" />
-          <h1 className="text-3xl font-semibold text-foreground">Clinical Trial Search</h1>
+          <h1 className="text-3xl font-semibold text-foreground">🧬 Gene Therapy Pipeline Intelligence</h1>
         </div>
         <p className="text-muted-foreground max-w-2xl mx-auto">
-          Discover clinical trials with comprehensive study details, endpoints, and statistical parameters
+          Identify emerging biotech innovators in late preclinical stages across Boston, San Francisco, San Diego, and Shanghai. Focus on unpartnered companies and partnership opportunities.
         </p>
+        <p className="text-xs text-muted-foreground">Focus areas: Boston • San Francisco • San Diego • Shanghai • Late preclinical companies • Partnership opportunities</p>
       </div>
 
       {/* Search Interface */}
@@ -276,7 +266,7 @@ const SearchPage = () => {
           <div className="relative">
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
-              placeholder="Search for clinical trials by condition, treatment, or study type..."
+              placeholder="Search gene therapy companies, partnerships, or clinical milestones..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               className="pl-12 pr-24 h-14 text-base border-muted-foreground/20 focus-visible:ring-2 focus-visible:ring-primary/20"
@@ -335,14 +325,13 @@ const SearchPage = () => {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <Select value={filters.phase} onValueChange={(value) => setFilters({...filters, phase: value})}>
                   <SelectTrigger className="h-9">
-                    <SelectValue placeholder="Phase" />
+                    <SelectValue placeholder="Development Stage" />
                   </SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="Late Preclinical">Late Preclinical</SelectItem>
                     <SelectItem value="Phase I">Phase I</SelectItem>
                     <SelectItem value="Phase II">Phase II</SelectItem>
                     <SelectItem value="Phase III">Phase III</SelectItem>
-                    <SelectItem value="Phase IV">Phase IV</SelectItem>
-                    <SelectItem value="Phase I/II">Phase I/II</SelectItem>
                   </SelectContent>
                 </Select>
 
@@ -351,32 +340,34 @@ const SearchPage = () => {
                     <SelectValue placeholder="Therapeutic Area" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Oncology">Oncology</SelectItem>
-                    <SelectItem value="Cardiology">Cardiology</SelectItem>
-                    <SelectItem value="Endocrinology">Endocrinology</SelectItem>
-                    <SelectItem value="Neurology">Neurology</SelectItem>
+                    <SelectItem value="Gene Therapy - Rare Diseases">Rare Diseases</SelectItem>
+                    <SelectItem value="Gene Therapy - Blood Disorders">Blood Disorders</SelectItem>
+                    <SelectItem value="Gene Therapy - Neuromuscular">Neuromuscular</SelectItem>
+                    <SelectItem value="Gene Therapy - Oncology">Oncology (CAR-T/TCR)</SelectItem>
                   </SelectContent>
                 </Select>
 
                 <Select value={filters.trialType} onValueChange={(value) => setFilters({...filters, trialType: value})}>
                   <SelectTrigger className="h-9">
-                    <SelectValue placeholder="Trial Type" />
+                    <SelectValue placeholder="Partnership Status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Interventional">Interventional</SelectItem>
-                    <SelectItem value="Observational">Observational</SelectItem>
-                    <SelectItem value="Adaptive">Adaptive</SelectItem>
+                    <SelectItem value="Unpartnered">Unpartnered</SelectItem>
+                    <SelectItem value="Partnership Discussions">Partnership Discussions</SelectItem>
+                    <SelectItem value="Seeking Alliance">Seeking Alliance</SelectItem>
+                    <SelectItem value="Internal Program">Internal Program</SelectItem>
                   </SelectContent>
                 </Select>
 
                 <Select value={filters.status} onValueChange={(value) => setFilters({...filters, status: value})}>
                   <SelectTrigger className="h-9">
-                    <SelectValue placeholder="Status" />
+                    <SelectValue placeholder="Innovation Hub" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Recruiting">Recruiting</SelectItem>
-                    <SelectItem value="Active, not recruiting">Active, not recruiting</SelectItem>
-                    <SelectItem value="Completed">Completed</SelectItem>
+                    <SelectItem value="Boston">Boston</SelectItem>
+                    <SelectItem value="San Francisco">San Francisco</SelectItem>
+                    <SelectItem value="San Diego">San Diego</SelectItem>
+                    <SelectItem value="Shanghai">Shanghai</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

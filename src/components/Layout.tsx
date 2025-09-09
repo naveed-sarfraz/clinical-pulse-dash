@@ -16,7 +16,7 @@ export default function Layout({ children }: LayoutProps) {
           <header className="h-14 flex items-center border-b bg-background/80 backdrop-blur-sm">
             <SidebarTrigger className="ml-4" />
             <div className="ml-4">
-              <h1 className="font-semibold text-lg">Clinical Trials Intelligence Platform</h1>
+              <h1 className="font-semibold text-lg">Fortrea Gene Therapy Intelligence Platform</h1>
             </div>
           </header>
           

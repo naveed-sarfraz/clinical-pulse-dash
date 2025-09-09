@@ -53,7 +53,7 @@ export function AppSidebar() {
             <TrendingUp className="h-6 w-6 text-primary" />
             {!collapsed && (
               <span className="font-bold text-lg bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                ClinTrials AI
+                Gene Therapy Intel
               </span>
             )}
           </div>
